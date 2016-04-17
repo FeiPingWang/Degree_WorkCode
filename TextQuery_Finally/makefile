@@ -1,5 +1,5 @@
 #copyright by FeiPingWang in 2016/04/17
-
+#ddd`dadja
 DIR = ./src/
 LIB = ./lib/
 cc = g++ --std = c++11
