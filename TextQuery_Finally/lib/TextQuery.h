@@ -1,6 +1,6 @@
 #ifndef _TextQuery_H
 #define _TextQuery_H
-
+#dad
 #include<iostream>
 #include<vector>
 #include<string>
