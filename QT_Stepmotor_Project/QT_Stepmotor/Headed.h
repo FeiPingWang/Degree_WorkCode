@@ -3,5 +3,7 @@
 
 #include <QMessageBox>
 #include <QString>
+#include <QProcess>
+#include <QStringList>
 
 #endif // HEADED_H

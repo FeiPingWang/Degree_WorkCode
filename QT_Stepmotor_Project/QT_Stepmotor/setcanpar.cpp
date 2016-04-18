@@ -6,6 +6,9 @@ SetCANPar::SetCANPar(QWidget *parent) :
     ui(new Ui::SetCANPar)
 {
     ui->setupUi(this);
+    m_strCan = "can0";      //初始默认值
+    m_strMode= "普通模式";
+    m_strBit = "500000";
 }
 
 SetCANPar::~SetCANPar()
@@ -16,10 +19,39 @@ SetCANPar::~SetCANPar()
 /* 配置参数确认对话框 */
 void SetCANPar::on_pB_Comfirm_clicked()
 {
-    QMessageBox::warning(this,("warning"),QString("确定配置CAN参数？"),QMessageBox::Yes,QMessageBox::No);
+    m_strCan = ui->cB_Can->currentText();   //获取参数
+    m_strMode = ui->cB_Mode->currentText();
+    m_strBit = ui->lE_Bitrate->text();
+
+    QStringList list;  //开启can0
+    list << "can0" << "stop";
+    QProcess *process1 = new QProcess(this);
+    process1 -> execute("canconfig",list);   //1.配置第一步
+
+    list.clear();
+    list << "can0" << "bitrate" << m_strBit << "ctrlmode" << "triple-sampling" \
+         << "on" << "listen-only" << "off" << "loopback" << "off";
+
+    QProcess *process2 = new QProcess(this);
+    process2-> execute("canconfig",list);
+
+    list.clear();
+    list << "can0" << "start";
+    QProcess *process3 = new QProcess(this);
+    process3-> execute("canconfig",list);  //完成配置
+
+    //emit stateChanged();                 //发送状态改变参数
 }
 
+/* 配置参数取消对话框 */
 void SetCANPar::on_pB_Cancel_clicked()
 {
-    this->close();
+    QMessageBox cansetBox(QMessageBox::NoIcon,QString(tr("Warning")),QString(tr("Configure Can parameter ?")));
+    cansetBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    cansetBox.setDefaultButton(QMessageBox::Yes);
+    int ret = cansetBox.exec();
+    if(ret = QMessageBox::Yes)  //如果确认，则关闭对话框
+        this->close();
+    //else
+    //    return;
 }

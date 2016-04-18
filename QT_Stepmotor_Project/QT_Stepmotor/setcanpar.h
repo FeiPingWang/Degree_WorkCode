@@ -22,6 +22,9 @@ private slots:
 
 private:
     Ui::SetCANPar *ui;
+    QString m_strCan;
+    QString m_strMode;
+    QString m_strBit;
 };
 
 #endif // SETCANPAR_H
