@@ -18,3 +18,8 @@ void SetCANPar::on_pB_Comfirm_clicked()
 {
     QMessageBox::warning(this,("warning"),QString("确定配置CAN参数？"),QMessageBox::Yes,QMessageBox::No);
 }
+
+void SetCANPar::on_pB_Cancel_clicked()
+{
+    this->close();
+}

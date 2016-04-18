@@ -18,10 +18,11 @@ StepMotor::~StepMotor()
 void StepMotor::on_pB_Can_Set_clicked()     //Unsuccessful
 {
   //  QMessageBox::warning(this,("warning"),QString("Start can0 and can1 together?"),QMessageBox::Yes,QMessageBox::No);
-    setcanpar->showFullScreen();
+    setcanpar->show();
 }
 
+/**** can参数设置对话框关闭 ****/
 void StepMotor::on_action_Exit_triggered()  //Successful
 {
-    close();
+    close();    //关闭
 }

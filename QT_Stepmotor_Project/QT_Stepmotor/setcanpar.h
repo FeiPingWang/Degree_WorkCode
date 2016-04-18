@@ -17,6 +17,9 @@ public:
     ~SetCANPar();
     void on_pB_Comfirm_clicked();
     
+private slots:
+    void on_pB_Cancel_clicked();
+
 private:
     Ui::SetCANPar *ui;
 };
