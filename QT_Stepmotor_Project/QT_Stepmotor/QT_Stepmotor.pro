@@ -12,11 +12,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         stepmotor.cpp \
-    setcanpar.cpp
+    setcanpar.cpp \
+    ThreadRec.cpp
 
 HEADERS  += stepmotor.h \
     setcanpar.h \
-    Headed.h
+    Headed.h \
+    Threadrec.h
 
 FORMS    += stepmotor.ui \
     setcanpar.ui

@@ -15,10 +15,14 @@ class SetCANPar : public QDialog
 public:
     explicit SetCANPar(QWidget *parent = 0);
     ~SetCANPar();
-    void on_pB_Comfirm_clicked();
     
 private slots:
     void on_pB_Cancel_clicked();
+
+    void on_pB_Comfirm_clicked();
+
+signals:
+    void stateChanged();
 
 private:
     Ui::SetCANPar *ui;

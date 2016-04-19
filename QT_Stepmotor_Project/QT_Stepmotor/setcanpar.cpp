@@ -16,42 +16,48 @@ SetCANPar::~SetCANPar()
     delete ui;
 }
 
-/* 配置参数确认对话框 */
-void SetCANPar::on_pB_Comfirm_clicked()
-{
-    m_strCan = ui->cB_Can->currentText();   //获取参数
-    m_strMode = ui->cB_Mode->currentText();
-    m_strBit = ui->lE_Bitrate->text();
-
-    QStringList list;  //开启can0
-    list << "can0" << "stop";
-    QProcess *process1 = new QProcess(this);
-    process1 -> execute("canconfig",list);   //1.配置第一步
-
-    list.clear();
-    list << "can0" << "bitrate" << m_strBit << "ctrlmode" << "triple-sampling" \
-         << "on" << "listen-only" << "off" << "loopback" << "off";
-
-    QProcess *process2 = new QProcess(this);
-    process2-> execute("canconfig",list);
-
-    list.clear();
-    list << "can0" << "start";
-    QProcess *process3 = new QProcess(this);
-    process3-> execute("canconfig",list);  //完成配置
-
-    //emit stateChanged();                 //发送状态改变参数
-}
-
 /* 配置参数取消对话框 */
 void SetCANPar::on_pB_Cancel_clicked()
 {
-    QMessageBox cansetBox(QMessageBox::NoIcon,QString(tr("Warning")),QString(tr("Configure Can parameter ?")));
-    cansetBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    cansetBox.setDefaultButton(QMessageBox::Yes);
-    int ret = cansetBox.exec();
-    if(ret = QMessageBox::Yes)  //如果确认，则关闭对话框
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Confirm", "Do you want to save and exit?", QMessageBox::Yes | QMessageBox::No);
+    if(reply == QMessageBox::Yes)       //确认退出
+    {
         this->close();
-    //else
-    //    return;
+    }
+}
+
+/* 配置参数确认对话框 */
+void SetCANPar::on_pB_Comfirm_clicked()
+{
+    QMessageBox::StandardButton confirm;
+    confirm = QMessageBox::question(this, "Confirm", "Do you want to save and exit?", QMessageBox::Yes | QMessageBox::No);
+
+    if(confirm == QMessageBox::Yes)             //确认退出
+    {
+        m_strCan = ui->cB_Can->currentText();   //获取参数
+        m_strMode = ui->cB_Mode->currentText();
+        m_strBit = ui->lE_Bitrate->text();
+
+        QStringList list;  //开启can0
+        list << "can0" << "stop";
+        QProcess *process1 = new QProcess(this);
+        process1 -> execute("canconfig",list);   //1.配置第一步
+
+        list.clear();
+        list << "can0" << "bitrate" << m_strBit << "ctrlmode" << "triple-sampling" \
+             << "on" << "listen-only" << "off" << "loopback" << "off";
+
+        QProcess *process2 = new QProcess(this);
+        process2-> execute("canconfig",list);
+
+        list.clear();
+        list << "can0" << "start";
+        QProcess *process3 = new QProcess(this);
+        process3-> execute("canconfig",list);  //完成配置
+
+        emit stateChanged();                 //发送状态改变参数
+        this->close();
+    }
+
 }
