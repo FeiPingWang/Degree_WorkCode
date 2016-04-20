@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>822</width>
-    <height>505</height>
+    <width>795</width>
+    <height>442</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>90</y>
+      <y>40</y>
       <width>101</width>
       <height>31</height>
      </rect>
@@ -30,10 +30,10 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>190</y>
+      <x>50</x>
+      <y>110</y>
       <width>341</width>
-      <height>241</height>
+      <height>81</height>
      </rect>
     </property>
     <property name="font">
@@ -47,7 +47,7 @@
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>0</x>
        <y>40</y>
        <width>101</width>
        <height>21</height>
@@ -76,10 +76,10 @@
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>120</y>
+      <x>410</x>
+      <y>50</y>
       <width>341</width>
-      <height>321</height>
+      <height>311</height>
      </rect>
     </property>
     <property name="font">
@@ -158,13 +158,26 @@
      <string>Time</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>40</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>调试</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>822</width>
+     <width>795</width>
      <height>26</height>
     </rect>
    </property>
@@ -179,8 +192,8 @@
     <property name="title">
      <string>运行</string>
     </property>
-    <addaction name="action_3"/>
-    <addaction name="action_4"/>
+    <addaction name="action_Start"/>
+    <addaction name="action_Stop"/>
     <addaction name="action_Exit"/>
    </widget>
    <widget class="QMenu" name="menu_help">
@@ -211,12 +224,12 @@
     <string>导入配置文件</string>
    </property>
   </action>
-  <action name="action_3">
+  <action name="action_Start">
    <property name="text">
     <string>开始</string>
    </property>
   </action>
-  <action name="action_4">
+  <action name="action_Stop">
    <property name="text">
     <string>停止</string>
    </property>

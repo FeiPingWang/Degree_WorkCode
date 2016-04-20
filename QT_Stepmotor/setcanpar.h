@@ -15,14 +15,20 @@ class SetCANPar : public QDialog
 public:
     explicit SetCANPar(QWidget *parent = 0);
     ~SetCANPar();
+    QString getcB_Can(){
+        if(m_strCan != "")
+            return m_strCan;
+        else
+            return "can0";
+    }
     
 private slots:
     void on_pB_Cancel_clicked();
-
     void on_pB_Comfirm_clicked();
 
 signals:
     void stateChanged();
+    void displySignal(QString router,QString mode,QString bitrate);
 
 private:
     Ui::SetCANPar *ui;

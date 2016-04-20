@@ -10,6 +10,7 @@
 #include <QTimer>
 #include <QThread>
 #include <QFile>
+#include <QTextStream>
 
 #include <iostream>
 #include <errno.h>
@@ -37,4 +38,5 @@
 
 #include "can_config.h"
 
+#define Print_DEBUG     //打印调试信息
 #endif // HEADED_H

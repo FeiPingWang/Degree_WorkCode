@@ -37,10 +37,10 @@ void SetCANPar::on_pB_Comfirm_clicked()
     {
         m_strCan = ui->cB_Can->currentText();   //获取参数
         m_strMode = ui->cB_Mode->currentText();
-        m_strBit = ui->lE_Bitrate->text();
+        m_strBit = ui->lE_Bitrate->text();      //暂时默认设置为普通模式
 
         QStringList list;  //开启can0
-        list << "can0" << "stop";
+        list << m_strCan << "stop";
         QProcess *process1 = new QProcess(this);
         process1 -> execute("canconfig",list);   //1.配置第一步
 
@@ -57,6 +57,7 @@ void SetCANPar::on_pB_Comfirm_clicked()
         process3-> execute("canconfig",list);  //完成配置
 
         emit stateChanged();                 //发送状态改变参数
+        emit displySignal(m_strCan,m_strMode,m_strBit);
         this->close();
     }
 

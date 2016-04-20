@@ -146,19 +146,6 @@
     <string>设置CAN总线参数</string>
    </property>
   </widget>
-  <widget class="QLabel" name="lb_test">
-   <property name="geometry">
-    <rect>
-     <x>270</x>
-     <y>230</y>
-     <width>66</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
  </widget>
  <resources/>
  <connections/>
