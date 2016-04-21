@@ -21,6 +21,7 @@ private slots:
     void cbStateChanged();      //can设置改变，重新设置
     void setDisLabel(QString,QString,QString);
     void ShowCanMsg(QString str);
+    void on_D_pB_Send_clicked();
 
 private:
     Ui::DebugWindow *ui;
