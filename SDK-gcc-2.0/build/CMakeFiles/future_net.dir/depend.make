@@ -9,6 +9,7 @@ CMakeFiles/future_net.dir/future_net.cpp.o: /home/work/Huawei_Git/SDK-gcc-2.0/fu
 CMakeFiles/future_net.dir/io.cpp.o: /home/work/Huawei_Git/SDK-gcc-2.0/future_net/io.cpp
 CMakeFiles/future_net.dir/io.cpp.o: /home/work/Huawei_Git/SDK-gcc-2.0/future_net/lib/lib_record.h
 
+CMakeFiles/future_net.dir/route.cpp.o: /home/work/Huawei_Git/SDK-gcc-2.0/future_net/lib/lib_io.h
 CMakeFiles/future_net.dir/route.cpp.o: /home/work/Huawei_Git/SDK-gcc-2.0/future_net/lib/lib_record.h
 CMakeFiles/future_net.dir/route.cpp.o: /home/work/Huawei_Git/SDK-gcc-2.0/future_net/route.cpp
 CMakeFiles/future_net.dir/route.cpp.o: /home/work/Huawei_Git/SDK-gcc-2.0/future_net/route.h

@@ -53,6 +53,8 @@ stdio.h
 -
 
 /home/work/Huawei_Git/SDK-gcc-2.0/future_net/route.h
+lib_io.h
+/home/work/Huawei_Git/SDK-gcc-2.0/future_net/lib_io.h
 memory.h
 -
 limits.h
