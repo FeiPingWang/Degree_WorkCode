@@ -1,0 +1,550 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+F:\学习资料\F105 Double CAN(123)\CAN（123）.uvproj
+Project File Date:  07/07/2015
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling cantx.c...
+compiling HardWare.c...
+user\HardWare.c(276): warning:  #1-D: last line of file ends without a newline
+user\HardWare.c:   }
+user\HardWare.c:    ^
+user\HardWare.c: user\HardWare.c: 1 warning, 0 errors
+compiling main.c...
+user\Hardware.h(12): warning:  #1-D: last line of file ends without a newline
+user\Hardware.h:   #endif
+user\Hardware.h:         ^
+user\main.c(4): error:  #5: cannot open source input file "delay.h": No such file or directory
+user\main.c:   #include "delay.h"
+user\main.c:                     ^
+user\main.c: user\main.c: 1 warning, 1 error
+compiling printf.c...
+user\printf.c(60): warning:  #1-D: last line of file ends without a newline
+user\printf.c:   }
+user\printf.c:    ^
+user\printf.c: user\printf.c: 1 warning, 0 errors
+compiling stm32f10x_it.c...
+user\hardware.h(12): warning:  #1-D: last line of file ends without a newline
+user\hardware.h:   #endif
+user\hardware.h:         ^
+user\hardware.h: user\stm32f10x_it.c: 1 warning, 0 errors
+compiling misc.c...
+compiling stm32f10x_adc.c...
+compiling stm32f10x_bkp.c...
+compiling stm32f10x_can.c...
+compiling stm32f10x_cec.c...
+compiling stm32f10x_crc.c...
+compiling stm32f10x_dac.c...
+compiling stm32f10x_dbgmcu.c...
+compiling stm32f10x_dma.c...
+compiling stm32f10x_exti.c...
+compiling stm32f10x_flash.c...
+compiling stm32f10x_fsmc.c...
+compiling stm32f10x_gpio.c...
+compiling stm32f10x_i2c.c...
+compiling stm32f10x_iwdg.c...
+compiling stm32f10x_pwr.c...
+compiling stm32f10x_rcc.c...
+compiling stm32f10x_rtc.c...
+Project build/rebuild aborted.
+Target not created
+Build target 'Target 1'
+compiling main.c...
+user\Hardware.h(12): warning:  #1-D: last line of file ends without a newline
+user\Hardware.h:   #endif
+user\Hardware.h:         ^
+user\main.c(4): error:  #5: cannot open source input file "delay.h": No such file or directory
+user\main.c:   #include "delay.h"
+user\main.c:                     ^
+user\main.c: user\main.c: 1 warning, 1 error
+compiling stm32f10x_sdio.c...
+compiling stm32f10x_spi.c...
+compiling stm32f10x_tim.c...
+compiling stm32f10x_usart.c...
+compiling stm32f10x_wwdg.c...
+compiling core_cm3.c...
+compiling system_stm32f10x.c...
+assembling startup_stm32f10x_cl.s...
+Target not created
+Build target 'Target 1'
+compiling main.c...
+user\Hardware.h(12): warning:  #1-D: last line of file ends without a newline
+user\Hardware.h:   #endif
+user\Hardware.h:         ^
+user\main.c(33): warning:  #223-D: function "CanWriteData1" declared implicitly
+user\main.c:               CanWriteData1(0x123);                                        //发送数据，数据帧标识符为0x123          
+user\main.c:               ^
+user\main.c(45): warning:  #223-D: function "CanWriteData2" declared implicitly
+user\main.c:               CanWriteData2(0x123);                                        //发送数据，数据帧标识符为0x123          
+user\main.c:               ^
+user\main.c(52): warning:  #111-D: statement is unreachable
+user\main.c:     return 0;
+user\main.c:     ^
+user\main.c: user\main.c: 4 warnings, 0 errors
+compiling stm32f10x_it.c...
+user\hardware.h(12): warning:  #1-D: last line of file ends without a newline
+user\hardware.h:   #endif
+user\hardware.h:         ^
+user\hardware.h: user\stm32f10x_it.c: 1 warning, 0 errors
+linking...
+Program Size: Code=10144 RO-data=368 RW-data=68 ZI-data=1636  
+FromELF: creating hex file...
+".\Obj\CAN（123）.axf" - 0 Error(s), 5 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: Code=10144 RO-data=368 RW-data=68 ZI-data=1636  
+FromELF: creating hex file...
+".\Obj\CAN（123）.axf" - 0 Error(s), 0 Warning(s).
+Load "F:\\学习资料\\F105 Double CAN(123)\\Obj\\CAN（123）.AXF" 
+USB Communication Failure
+Load "F:\\学习资料\\F105 Double CAN(123)\\Obj\\CAN（123）.AXF" 
+Set JLink Project File to "F:\学习资料\F105 Double CAN(123)\JLinkSettings.ini"
+ 
+JLink info:
+------------
+DLL: V4.15n, compiled Jun 18 2010 19:55:09
+Firmware: J-Link ARM V8 compiled Jul 17 2014 12:31:18
+Hardware: V8.00
+S/N : 17935099 
+Feature(s) : RDI,FlashDL,FlashBP,JFlash 
+ 
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+ROMTableAddr = 0xE00FF003
+ 
+Target info:
+------------
+Device: STM32F105VC
+VTarget = 3.267V
+State of Pins: 
+TCK: 0, TDI: 1, TDO: 1, TMS: 1, TRES: 1, TRST: 1
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+Hardware-Breakpoints: 6
+Software-Breakpoints: 2048
+Watchpoints:          4
+JTAG speed: 4000 kHz
+ 
+Erase Done.
+Programming Done.
+Verify OK.
+Build target 'Target 1'
+compiling cantx.c...
+compiling HardWare.c...
+user\HardWare.c(276): warning:  #1-D: last line of file ends without a newline
+user\HardWare.c:   }
+user\HardWare.c:    ^
+user\HardWare.c: user\HardWare.c: 1 warning, 0 errors
+compiling main.c...
+user\Hardware.h(12): warning:  #1-D: last line of file ends without a newline
+user\Hardware.h:   #endif
+user\Hardware.h:         ^
+user\main.c(33): warning:  #223-D: function "CanWriteData1" declared implicitly
+user\main.c:               CanWriteData1(0x123);                                        //发送数据，数据帧标识符为0x123          
+user\main.c:               ^
+user\main.c(45): warning:  #223-D: function "CanWriteData2" declared implicitly
+user\main.c:               CanWriteData2(0x123);                                        //发送数据，数据帧标识符为0x123          
+user\main.c:               ^
+user\main.c(52): warning:  #111-D: statement is unreachable
+user\main.c:     return 0;
+user\main.c:     ^
+user\main.c: user\main.c: 4 warnings, 0 errors
+compiling printf.c...
+user\printf.c(60): warning:  #1-D: last line of file ends without a newline
+user\printf.c:   }
+user\printf.c:    ^
+user\printf.c: user\printf.c: 1 warning, 0 errors
+compiling stm32f10x_it.c...
+user\hardware.h(12): warning:  #1-D: last line of file ends without a newline
+user\hardware.h:   #endif
+user\hardware.h:         ^
+user\hardware.h: user\stm32f10x_it.c: 1 warning, 0 errors
+compiling misc.c...
+compiling stm32f10x_adc.c...
+compiling stm32f10x_bkp.c...
+compiling stm32f10x_can.c...
+compiling stm32f10x_cec.c...
+compiling stm32f10x_crc.c...
+compiling stm32f10x_dac.c...
+compiling stm32f10x_dbgmcu.c...
+compiling stm32f10x_dma.c...
+compiling stm32f10x_exti.c...
+compiling stm32f10x_flash.c...
+compiling stm32f10x_fsmc.c...
+compiling stm32f10x_gpio.c...
+compiling stm32f10x_i2c.c...
+compiling stm32f10x_iwdg.c...
+compiling stm32f10x_pwr.c...
+compiling stm32f10x_rcc.c...
+compiling stm32f10x_rtc.c...
+compiling stm32f10x_sdio.c...
+compiling stm32f10x_spi.c...
+compiling stm32f10x_tim.c...
+compiling stm32f10x_usart.c...
+compiling stm32f10x_wwdg.c...
+compiling system_stm32f10x.c...
+linking...
+Program Size: Code=10144 RO-data=368 RW-data=68 ZI-data=1636  
+FromELF: creating hex file...
+".\Obj\CAN（123）.axf" - 0 Error(s), 7 Warning(s).
+Load "F:\\学习资料\\F105 Double CAN(123)\\Obj\\CAN（123）.AXF" 
+Set JLink Project File to "F:\学习资料\F105 Double CAN(123)\JLinkSettings.ini"
+ 
+JLink info:
+------------
+DLL: V4.15n, compiled Jun 18 2010 19:55:09
+Firmware: J-Link ARM V8 compiled Jul 17 2014 12:31:18
+Hardware: V8.00
+S/N : 17935099 
+Feature(s) : RDI,FlashDL,FlashBP,JFlash 
+ 
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+ROMTableAddr = 0xE00FF003
+ 
+Target info:
+------------
+Device: STM32F105VC
+VTarget = 3.267V
+State of Pins: 
+TCK: 0, TDI: 1, TDO: 1, TMS: 1, TRES: 1, TRST: 1
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+Hardware-Breakpoints: 6
+Software-Breakpoints: 2048
+Watchpoints:          4
+JTAG speed: 4000 kHz
+ 
+Erase Done.
+Programming Done.
+Verify OK.
+Build target 'Target 1'
+linking...
+Program Size: Code=10144 RO-data=368 RW-data=68 ZI-data=1636  
+FromELF: creating hex file...
+".\Obj\CAN（123）.axf" - 0 Error(s), 0 Warning(s).
+Load "F:\\学习资料\\F105 Double CAN(123)\\Obj\\CAN（123）.AXF" 
+Set JLink Project File to "F:\学习资料\F105 Double CAN(123)\JLinkSettings.ini"
+ 
+JLink info:
+------------
+DLL: V4.15n, compiled Jun 18 2010 19:55:09
+Firmware: J-Link ARM V8 compiled Jul 17 2014 12:31:18
+Hardware: V8.00
+S/N : 17935099 
+Feature(s) : RDI,FlashDL,FlashBP,JFlash 
+ 
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+ROMTableAddr = 0xE00FF003
+ 
+Target info:
+------------
+Device: STM32F105VC
+VTarget = 3.267V
+State of Pins: 
+TCK: 0, TDI: 1, TDO: 1, TMS: 1, TRES: 1, TRST: 1
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+Hardware-Breakpoints: 6
+Software-Breakpoints: 2048
+Watchpoints:          4
+JTAG speed: 4000 kHz
+ 
+Erase Done.
+Programming Done.
+Verify OK.
+Build target 'Target 1'
+linking...
+Program Size: Code=10144 RO-data=368 RW-data=68 ZI-data=1636  
+FromELF: creating hex file...
+".\Obj\CAN（123）.axf" - 0 Error(s), 0 Warning(s).
+Load "F:\\学习资料\\F105 Double CAN(123)\\Obj\\CAN（123）.AXF" 
+Set JLink Project File to "F:\学习资料\F105 Double CAN(123)\JLinkSettings.ini"
+ 
+JLink info:
+------------
+DLL: V4.15n, compiled Jun 18 2010 19:55:09
+Firmware: J-Link ARM V8 compiled Jul 17 2014 12:31:18
+Hardware: V8.00
+S/N : 17935099 
+Feature(s) : RDI,FlashDL,FlashBP,JFlash 
+ 
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+ROMTableAddr = 0xE00FF003
+ 
+Target info:
+------------
+Device: STM32F105VC
+VTarget = 3.267V
+State of Pins: 
+TCK: 0, TDI: 1, TDO: 1, TMS: 1, TRES: 1, TRST: 1
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+Hardware-Breakpoints: 6
+Software-Breakpoints: 2048
+Watchpoints:          4
+JTAG speed: 4000 kHz
+ 
+Erase Done.
+Programming Done.
+Verify OK.
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+Application running ...
+Build target 'Target 1'
+compiling stm32f10x_it.c...
+user\hardware.h(12): warning:  #1-D: last line of file ends without a newline
+user\hardware.h:   #endif
+user\hardware.h:         ^
+user\hardware.h: user\stm32f10x_it.c: 1 warning, 0 errors
+linking...
+Program Size: Code=10144 RO-data=368 RW-data=68 ZI-data=1636  
+FromELF: creating hex file...
+".\Obj\CAN（123）.axf" - 0 Error(s), 1 Warning(s).
+Load "F:\\学习资料\\F105 Double CAN(123)\\Obj\\CAN（123）.AXF" 
+Set JLink Project File to "F:\学习资料\F105 Double CAN(123)\JLinkSettings.ini"
+ 
+JLink info:
+------------
+DLL: V4.15n, compiled Jun 18 2010 19:55:09
+Firmware: J-Link ARM V8 compiled Jul 17 2014 12:31:18
+Hardware: V8.00
+S/N : 17935099 
+Feature(s) : RDI,FlashDL,FlashBP,JFlash 
+ 
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+ROMTableAddr = 0xE00FF003
+ 
+Target info:
+------------
+Device: STM32F105VC
+VTarget = 3.267V
+State of Pins: 
+TCK: 0, TDI: 1, TDO: 1, TMS: 1, TRES: 1, TRST: 1
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+Hardware-Breakpoints: 6
+Software-Breakpoints: 2048
+Watchpoints:          4
+JTAG speed: 4000 kHz
+ 
+Erase Done.
+Programming Done.
+Verify OK.
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+Application running ...
+Build target 'Target 1'
+compiling HardWare.c...
+user\HardWare.c(276): warning:  #1-D: last line of file ends without a newline
+user\HardWare.c:   }
+user\HardWare.c:    ^
+user\HardWare.c: user\HardWare.c: 1 warning, 0 errors
+compiling main.c...
+user\Hardware.h(12): warning:  #1-D: last line of file ends without a newline
+user\Hardware.h:   #endif
+user\Hardware.h:         ^
+user\main.c(33): warning:  #223-D: function "CanWriteData1" declared implicitly
+user\main.c:               CanWriteData1(0x123);                                        //发送数据，数据帧标识符为0x123          
+user\main.c:               ^
+user\main.c(45): warning:  #223-D: function "CanWriteData2" declared implicitly
+user\main.c:               CanWriteData2(0x123);                                        //发送数据，数据帧标识符为0x123          
+user\main.c:               ^
+user\main.c(52): warning:  #111-D: statement is unreachable
+user\main.c:     return 0;
+user\main.c:     ^
+user\main.c: user\main.c: 4 warnings, 0 errors
+linking...
+Program Size: Code=10144 RO-data=368 RW-data=68 ZI-data=1636  
+FromELF: creating hex file...
+".\Obj\CAN（123）.axf" - 0 Error(s), 5 Warning(s).
+Load "F:\\学习资料\\F105 Double CAN(123)\\Obj\\CAN（123）.AXF" 
+Set JLink Project File to "F:\学习资料\F105 Double CAN(123)\JLinkSettings.ini"
+ 
+JLink info:
+------------
+DLL: V4.15n, compiled Jun 18 2010 19:55:09
+Firmware: J-Link ARM V8 compiled Jul 17 2014 12:31:18
+Hardware: V8.00
+S/N : 17935099 
+Feature(s) : RDI,FlashDL,FlashBP,JFlash 
+ 
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+ROMTableAddr = 0xE00FF003
+ 
+Target info:
+------------
+Device: STM32F105VC
+VTarget = 3.274V
+State of Pins: 
+TCK: 0, TDI: 1, TDO: 1, TMS: 1, TRES: 1, TRST: 1
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+Hardware-Breakpoints: 6
+Software-Breakpoints: 2048
+Watchpoints:          4
+JTAG speed: 4000 kHz
+ 
+Erase Done.
+Programming Done.
+Verify OK.
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+Application running ...
+compiling main.c...
+user\Hardware.h(12): warning:  #1-D: last line of file ends without a newline
+user\Hardware.h:   #endif
+user\Hardware.h:         ^
+user\main.c(33): warning:  #223-D: function "CanWriteData1" declared implicitly
+user\main.c:               CanWriteData1(0x123);                                        //发送数据，数据帧标识符为0x123          
+user\main.c:               ^
+user\main.c(45): warning:  #223-D: function "CanWriteData2" declared implicitly
+user\main.c:               CanWriteData2(0x123);                                        //发送数据，数据帧标识符为0x123          
+user\main.c:               ^
+user\main.c(52): warning:  #111-D: statement is unreachable
+user\main.c:     return 0;
+user\main.c:     ^
+user\main.c: user\main.c: 4 warnings, 0 errors
+user\main.c - 0 Error(s), 4 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: Code=10144 RO-data=368 RW-data=68 ZI-data=1636  
+FromELF: creating hex file...
+".\Obj\CAN（123）.axf" - 0 Error(s), 0 Warning(s).
+Load "F:\\学习资料\\F105 Double CAN(123)\\Obj\\CAN（123）.AXF" 
+Set JLink Project File to "F:\学习资料\F105 Double CAN(123)\JLinkSettings.ini"
+ 
+JLink info:
+------------
+DLL: V4.15n, compiled Jun 18 2010 19:55:09
+Firmware: J-Link ARM V8 compiled Jul 17 2014 12:31:18
+Hardware: V8.00
+S/N : 17935099 
+Feature(s) : RDI,FlashDL,FlashBP,JFlash 
+ 
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+ROMTableAddr = 0xE00FF003
+ 
+Target info:
+------------
+Device: STM32F105VC
+VTarget = 3.267V
+State of Pins: 
+TCK: 0, TDI: 1, TDO: 1, TMS: 1, TRES: 1, TRST: 1
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+Hardware-Breakpoints: 6
+Software-Breakpoints: 2048
+Watchpoints:          4
+JTAG speed: 4000 kHz
+ 
+Erase Done.
+Programming Done.
+Verify OK.
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+Application running ...
+Build target 'Target 1'
+compiling main.c...
+user\Hardware.h(12): warning:  #1-D: last line of file ends without a newline
+user\Hardware.h:   #endif
+user\Hardware.h:         ^
+user\main.c(33): warning:  #223-D: function "CanWriteData1" declared implicitly
+user\main.c:               CanWriteData1(0x123);                                        //发送数据，数据帧标识符为0x123          
+user\main.c:               ^
+user\main.c(45): warning:  #223-D: function "CanWriteData2" declared implicitly
+user\main.c:               CanWriteData2(0x123);                                        //发送数据，数据帧标识符为0x123          
+user\main.c:               ^
+user\main.c(52): warning:  #111-D: statement is unreachable
+user\main.c:     return 0;
+user\main.c:     ^
+user\main.c: user\main.c: 4 warnings, 0 errors
+linking...
+Program Size: Code=10144 RO-data=368 RW-data=68 ZI-data=1636  
+FromELF: creating hex file...
+".\Obj\CAN（123）.axf" - 0 Error(s), 4 Warning(s).
+Load "F:\\学习资料\\F105 Double CAN(123)\\Obj\\CAN（123）.AXF" 
+Set JLink Project File to "F:\学习资料\F105 Double CAN(123)\JLinkSettings.ini"
+ 
+JLink info:
+------------
+DLL: V4.15n, compiled Jun 18 2010 19:55:09
+Firmware: J-Link ARM V8 compiled Jul 17 2014 12:31:18
+Hardware: V8.00
+S/N : 17935099 
+Feature(s) : RDI,FlashDL,FlashBP,JFlash 
+ 
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+ROMTableAddr = 0xE00FF003
+ 
+Target info:
+------------
+Device: STM32F105VC
+VTarget = 3.274V
+State of Pins: 
+TCK: 0, TDI: 1, TDO: 1, TMS: 1, TRES: 1, TRST: 1
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+Hardware-Breakpoints: 6
+Software-Breakpoints: 2048
+Watchpoints:          4
+JTAG speed: 4000 kHz
+ 
+Erase Done.
+Programming Done.
+Verify OK.
+* JLink Info: Found SWD-DP with ID 0x1BA01477
+* JLink Info: TPIU fitted.
+* JLink Info: ETM fitted.
+* JLink Info:   FPUnit: 6 code (BP) slots and 2 literal slots
+Application running ...
