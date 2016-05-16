@@ -14,17 +14,20 @@ SOURCES += main.cpp\
         stepmotor.cpp \
     setcanpar.cpp \
     ThreadRec.cpp \
-    debugwindow.cpp
+    debugwindow.cpp \
+    setmotorpar.cpp
 
 HEADERS  += stepmotor.h \
     setcanpar.h \
     Headed.h \
     Threadrec.h \
-    debugwindow.h
+    debugwindow.h \
+    setmotorpar.h
 
 FORMS    += stepmotor.ui \
     setcanpar.ui \
-    debugwindow.ui
+    debugwindow.ui \
+    setmotorpar.ui
 
 OTHER_FILES += \
     readme.txt
