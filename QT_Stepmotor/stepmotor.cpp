@@ -1,6 +1,6 @@
 #include "stepmotor.h"
 #include "ui_stepmotor.h"
-#include <QTextStream>
+
 StepMotor::StepMotor(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::StepMotor)
@@ -8,11 +8,13 @@ StepMotor::StepMotor(QWidget *parent) :
     ui->setupUi(this);
     setcanpar = new SetCANPar(this);
     debugwindow = new DebugWindow(this);
+    setMotorPar = new SetMotorPar(this);
 
-    connect(setcanpar, SIGNAL(stateChanged()), debugwindow, SLOT(cbStateChanged())); //receiver 为 debugwindow对象
+    connect(setcanpar, SIGNAL(stateChanged()), debugwindow, SLOT(cbStateChanged()));     //receiver 为 debugwindow对象
     connect(setcanpar,SIGNAL(displySignal(QString,QString,QString)),debugwindow,SLOT(setDisLabel(QString,QString,QString)));
-
-    DateTime = new QTimer(this);      //显示系统实时时间
+    connect(setMotorPar,SIGNAL(SendMotorPar(QStringList)),this,SLOT(getMotorPar(QStringList)));  //得到步进电机的设置数据发送
+  //  connect(setcanpar,SIGNAL(displySignal(QString,QString,QString)l),this,SLOT(getCanPar(QString,QString,QString)));
+    DateTime = new QTimer(this);         //显示系统实时时间
     connect(DateTime, SIGNAL(timeout()), this, SLOT(timeupdate()));
     DateTime->start(1000);
 }
@@ -57,4 +59,40 @@ void StepMotor::on_action_Stop_triggered()
 void StepMotor::on_pushButton_clicked()
 {
     debugwindow->show();
+}
+
+void StepMotor::on_pB_motor_set_clicked()
+{
+    setMotorPar->show();
+}
+
+/*发送控制步进电机信号（Debug）*/
+void StepMotor::on_pB_Start_Debug_clicked()
+{
+    QString can = setcanpar->getcB_Can();
+
+}
+
+void StepMotor::getMotorPar(QStringList motorPar)
+{
+    QProcess *processMotorSend = new QProcess(this);
+    for(QStringList::iterator iter = motorPar.begin();iter != motorPar.end();iter++)
+    {
+        QString s = *iter;
+        SendList << s;      //保存到发送list中
+    }
+    SendList.insert(0,"0x01");  //ID
+    SendList.insert(0,"-i");
+    SendList.insert(0,setcanpar->getcB_Can());      //CAN router
+    processMotorSend->execute("cansend", SendList);     //发送
+
+#ifdef Print_DEBUG
+    QTextStream cout(stdout,QIODevice::WriteOnly);
+    cout << "SendList" << endl;
+    for(QStringList::iterator iter = SendList.begin();iter != SendList.end();iter++)
+    {
+        cout << *iter << " ";
+    }
+    cout << endl;
+#endif
 }

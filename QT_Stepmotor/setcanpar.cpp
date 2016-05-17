@@ -60,5 +60,4 @@ void SetCANPar::on_pB_Comfirm_clicked()
         emit displySignal(m_strCan,m_strMode,m_strBit);
         this->close();
     }
-
 }

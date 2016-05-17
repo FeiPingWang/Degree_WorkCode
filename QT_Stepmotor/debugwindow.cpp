@@ -77,7 +77,7 @@ void DebugWindow::on_D_pB_Send_clicked()
     processDsend->execute("cansend", list);    //发送
 
 #ifdef Print_DEBUG
-   QTextStream cout(stdout,QIODevice::WriteOnly);
+    QTextStream cout(stdout,QIODevice::WriteOnly);
     for(int i=0;i<list.size();i++)
         cout << list[i]<<endl;
 #endif

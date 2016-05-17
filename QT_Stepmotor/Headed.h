@@ -35,7 +35,7 @@
 
 #include <linux/can.h>
 #include <linux/can/raw.h>
-
+#include <iostream>
 #include "can_config.h"
 
 #define Print_DEBUG     //打印调试信息
