@@ -21,6 +21,8 @@ private slots:
 
     void on_pB_Confirm_clicked();
 
+    void on_pB_Exit_clicked();
+
 signals:
     void SendMotorPar(QStringList vMoPar);
 

@@ -69,23 +69,11 @@ void StepMotor::on_pB_motor_set_clicked()
 /*发送控制步进电机信号（Debug）*/
 void StepMotor::on_pB_Start_Debug_clicked()
 {
-    QString can = setcanpar->getcB_Can();
-
-}
-
-void StepMotor::getMotorPar(QStringList motorPar)
-{
     QProcess *processMotorSend = new QProcess(this);
-    for(QStringList::iterator iter = motorPar.begin();iter != motorPar.end();iter++)
-    {
-        QString s = *iter;
-        SendList << s;      //保存到发送list中
-    }
     SendList.insert(0,"0x01");  //ID
     SendList.insert(0,"-i");
     SendList.insert(0,setcanpar->getcB_Can());      //CAN router
     processMotorSend->execute("cansend", SendList);     //发送
-
 #ifdef Print_DEBUG
     QTextStream cout(stdout,QIODevice::WriteOnly);
     cout << "SendList" << endl;
@@ -95,4 +83,14 @@ void StepMotor::getMotorPar(QStringList motorPar)
     }
     cout << endl;
 #endif
+}
+
+void StepMotor::getMotorPar(QStringList motorPar)
+{
+    SendList.clear();   //clear first
+    for(QStringList::iterator iter = motorPar.begin();iter != motorPar.end();iter++)
+    {
+        QString s = *iter;
+        SendList << s;      //保存到发送list中
+    }
 }

@@ -62,3 +62,8 @@ void SetMotorPar::on_pB_Confirm_clicked()
 #endif
 
 }
+
+void SetMotorPar::on_pB_Exit_clicked()
+{
+    this->close();
+}
