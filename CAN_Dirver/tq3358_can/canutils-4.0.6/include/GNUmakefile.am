@@ -1,4 +1,0 @@
-MAINTAINERCLEANFILES = \
-	can_config.h.in	\
-	GNUmakefile.in
-
