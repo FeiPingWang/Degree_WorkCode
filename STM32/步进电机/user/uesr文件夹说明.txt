@@ -1,2 +1,0 @@
-user文件夹一般用来存放驱动程序文件 也包含其他四个文件
-main.c、 stm32f10x_conf.h、 stm32f10x_it.c、 stm32f10x_it.h
