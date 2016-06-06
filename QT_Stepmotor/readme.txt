@@ -1,2 +1,0 @@
-Copyright by 王飞平
-ThreadRec线程只是实现接收消息当功能
