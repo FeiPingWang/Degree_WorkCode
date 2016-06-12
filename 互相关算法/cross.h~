@@ -1,0 +1,26 @@
+#ifndef __CROSS_H
+#define __CROSS_H
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <stdlib.h>
+
+class complex{
+public:
+	complex() = default;
+	~complex();
+	complex operator+(const complex &lhs,const complex &rhs);
+	complex operator-(const complex &lhs,const complex &rhs);
+	complex operator*(const complex &lhs,const complex &rhs);
+	complex operator/(const complex &lhs,const complex &rhs);
+	complex operator=(const complex &rhs);
+private:	
+    double real;
+    double img; 
+};
+
+#define PI 3.14159265358
+#define N  32
+
+#endif

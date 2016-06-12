@@ -1,0 +1,13 @@
+class CL
+{
+public:
+    CL() = default;
+    ~CL();
+private:
+	int size = N;
+    vector<complex> X;
+    vector<complex> Y;
+    vector<complex> R;
+    vector<complex> W;
+	vector<double> array;
+}
