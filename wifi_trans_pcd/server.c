@@ -15,6 +15,7 @@
 #define PORT     6000 
 #define MAXBACK  1000
 #define MAXLINE  1024
+#define BUFFSIZE 4096
 
 char path[MAXLINE] = "~/PcdFile/";	//接收文件存放目录
 int curReceiveNum = 0;				//接收的文件编号，按照编号保存文件
@@ -33,26 +34,32 @@ int setnonblocking(int fd)
     return 0;  
 }  
 
-/*接收客户端发来的文件*/
+/*接收客户端发来的文件，使用TCP协议*/
 int recvFile(int connfd)
 {
 		FILE *fp;
-		fp = fopen("713.c","a+");
-		char buf[1024];
+		fp = fopen("713.c","wb");	//二进制读写，可以传输任何文件
+		char buf[BUFFSIZE];
 		int nread,nwrite;
 
-		if((nread = recv(connfd,buf,1024,0)) == -1)
+		while(nread = recv(connfd,buf,BUFFSIZE,0))
 		{
-			printf("recv error: %d\n",errno);
-			exit(EXIT_FAILURE);
+			if(nread == -1)
+			{
+				printf("recv end: %d\n",errno);
+				//exit(EXIT_FAILURE);
+			}
+			nwrite=fwrite(buf,sizeof(char),nread,fp);
+			
+			if(nwrite < nread)  
+			{  
+				printf("fwrite error: %d\n",errno);
+				exit(1);  
+			}  
+			bzero(buf,BUFFSIZE);  
 		}
-		printf("nread is %d\n",nread);
-		printf("%s\n",buf);
-		buf[nread] = '\n';
-		send(connfd,buf,nread,0);
-		printf("nread is %d\n",nread);
-		fwrite(buf,strlen(buf),1,fp);
 		fclose(fp);
+		//close(connfd);
 }
 
 int main(void)
@@ -144,7 +151,7 @@ int main(void)
 				//把新连接加入epoll中
                 ev.events = EPOLLIN | EPOLLET;      	  
                 ev.data.fd = conn_fd;                    
-                if( epoll_ctl(epoll_fd, EPOLL_CTL_ADD, conn_fd, &ev ) < 0 )  
+                if(epoll_ctl(epoll_fd, EPOLL_CTL_ADD, conn_fd, &ev) < 0 )  
                 {  
                     printf("Epoll Error : %d\n", errno);  
                     exit( EXIT_FAILURE );  
@@ -153,11 +160,13 @@ int main(void)
             }
 			else							   //有数据需要读
 			{
-				curReceiveNum++;
+				//curReceiveNum++;
 				//pthread_create(&pthId,NULL,recvFile,&evs[i].data.fd);	//把套接字传入线程中
 				//pthread_join(pthId,NULL);
+				printf("处理文件开始\n");
 				recvFile(evs[i].data.fd);
 				printf("thread handle finish\n");
+				continue;
 				/*nread = read(evs[i].data.fd, buf, sizeof(buf));
 				if(nread < 0)
 				{
@@ -174,4 +183,6 @@ int main(void)
 	close(listen_fd);
 	return 0;
 }
+
+
 

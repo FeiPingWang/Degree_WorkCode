@@ -13,17 +13,17 @@
 #define MAXLINE 1024  
 #define SERV_PORT 6000  
 #define MAXPTHREAD 500
-
-int curConnect = 0;
+#define BUFFSIZE 4096
+//int curConnect = 0;
 
 //建立连接（线程调用）
 int creatConnect(char* ipServer)
 {
 	int connfd;
-	char *buf = "hello";
+	char buf[BUFFSIZE];
 	struct sockaddr_in servaddr; 
-	
-	printf("pthread ID created: %d\n",pthread_self());
+	char* filename = "t.c";
+	//printf("pthread ID created: %d\n",pthread_self());
 	
 	if((connfd = socket(AF_INET,SOCK_STREAM, 0)) == -1 )  
     {  
@@ -42,14 +42,38 @@ int creatConnect(char* ipServer)
         printf("Connect error..\n");  
         exit(EXIT_FAILURE);  
     }
-	write(connfd,buf,sizeof(buf));
-	printf("connect %d",curConnect++);
-	while(1)
-	{
-		
-	}
-	printf("pthread ID exit : %d\n",pthread_self());
-	pthread_exit(0);
+	//发送文件
+	FILE *fd = fopen(filename,"rb");
+	if(fd==NULL)  
+    {  
+        printf("File :%s not found!\n",filename);  
+		exit(EXIT_FAILURE);
+    }  
+	bzero(buf,BUFFSIZE);  
+    int file_block_length=0;  
+	
+    while((file_block_length = fread(buf,sizeof(char),BUFFSIZE,fd))>0)  
+    {  
+        printf("file_block_length:%d\n",file_block_length);  
+        if(send(connfd,buf,file_block_length,0)<0)  
+        {  
+            perror("Send");  
+            exit(1);  
+        }  
+        bzero(buf,BUFFSIZE);     
+    }  
+    fclose(fd);  
+    printf("Transfer file finished !\n");   
+    close(connfd);  
+	
+	
+	
+	
+	//write(connfd,buf,sizeof(buf));
+	//printf("connect %d",curConnect++);
+	
+	//printf("pthread ID exit : %d\n",pthread_self());
+	//pthread_exit(0);
 
 }
 
@@ -64,8 +88,9 @@ int main(int argc, char **argv)
         printf("Input server ip !\n");  
         exit( EXIT_FAILURE );  
     }  
+	creatConnect(argv[1]);
     //建立套接字  
-    for(i = 0;i<MAXPTHREAD;i++)
+    /*for(i = 0;i<MAXPTHREAD;i++)
 	{
 		err = pthread_create(&pthId,NULL,creatConnect,argv[1]);
 		if(err != 0)
@@ -75,8 +100,9 @@ int main(int argc, char **argv)
 		}
 	//	sleep(1);
 	}
-	pthread_join(pthId,NULL);
+	pthread_join(pthId,NULL);*/
 	printf("create ok\n");
     return 0;  
 }  
+
 
