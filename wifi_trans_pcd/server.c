@@ -10,6 +10,7 @@
 #include <fcntl.h>                    
 #include <sys/resource.h>
 #include <pthread.h>
+#include <time.h>
 
 #define MAXEPOLL 200000
 #define PORT     6000 
@@ -35,22 +36,25 @@ int setnonblocking(int fd)
 }  
 
 /*接收客户端发来的文件，使用TCP协议*/
-int recvFile(int connfd)
+int recvFile(void* arg)
 {
 		FILE *fp;
-		fp = fopen("713.c","wb");	//二进制读写，可以传输任何文件
+		char *fileTime = NULL;
+		fp = fopen("713.png","ab");		//二进制读写，可以传输任何文件
 		char buf[BUFFSIZE];
 		int nread,nwrite;
+		int connfd = *((int*)arg);
+		printf("connfd %d\n",connfd);
 
 		while(nread = recv(connfd,buf,BUFFSIZE,0))
 		{
 			if(nread == -1)
 			{
 				printf("recv end: %d\n",errno);
-				//exit(EXIT_FAILURE);
+				exit(EXIT_FAILURE);
 			}
-			nwrite=fwrite(buf,sizeof(char),nread,fp);
-			
+			nwrite = fwrite(buf,sizeof(char),nread,fp);
+			printf("nread is %d\n",nread);	
 			if(nwrite < nread)  
 			{  
 				printf("fwrite error: %d\n",errno);
@@ -59,6 +63,7 @@ int recvFile(int connfd)
 			bzero(buf,BUFFSIZE);  
 		}
 		fclose(fp);
+		pthread_exit(0);
 		//close(connfd);
 }
 
@@ -71,7 +76,7 @@ int main(void)
     int    cur_fds = 0;               //当前已经存在的数量  
     int    wait_fds;               //epoll_wait 的返回值  
     int    i;  
-	pthread_t pthId;
+	//pthread_t pthId;
 	
     struct sockaddr_in servaddr;  
     struct sockaddr_in cliaddr;  
@@ -120,7 +125,7 @@ int main(void)
 	/*接收客户端发来的文件*/
 	
     //以下是处理部分，使用epoll
-	epoll_fd = epoll_create(MAXEPOLL);    //创建
+	epoll_fd = epoll_create(MAXEPOLL);		//创建
     ev.events = EPOLLIN | EPOLLET;      	//边沿触发，检测读  
     ev.data.fd = listen_fd;                 //监听套接字加入  
     if(epoll_ctl(epoll_fd,EPOLL_CTL_ADD,listen_fd,&ev) < 0)  
@@ -138,9 +143,9 @@ int main(void)
         }  
 		for(i = 0;i < wait_fds;i++)
 		{
-			if(evs[i].data.fd == listen_fd)      //有新的客户连接                                     
+			if(evs[i].data.fd == listen_fd)      //有新的客户连接                      
             {  
-                if((conn_fd = accept(listen_fd,(struct sockaddr *)&cliaddr, &Socklen)) == -1)  
+                if((conn_fd = accept(listen_fd,(struct sockaddr*)&cliaddr, &Socklen)) == -1)  
                 {  
                     printf("Accept Error : %d\n", errno);  
                     exit( EXIT_FAILURE );  
@@ -161,26 +166,20 @@ int main(void)
 			else							   //有数据需要读
 			{
 				//curReceiveNum++;
-				//pthread_create(&pthId,NULL,recvFile,&evs[i].data.fd);	//把套接字传入线程中
-				//pthread_join(pthId,NULL);
+				pthread_t pthId;
 				printf("处理文件开始\n");
-				recvFile(evs[i].data.fd);
-				printf("thread handle finish\n");
-				continue;
-				/*nread = read(evs[i].data.fd, buf, sizeof(buf));
-				if(nread < 0)
+				printf("%d\n",evs[i].data.fd);
+				if(pthread_create(&pthId,NULL,recvFile,&evs[i].data.fd))
 				{
-					printf("read error: %d",errno);
+					printf("pthread_create error\n");
 					exit(EXIT_FAILURE);
 				}
-				buf[nread] = '\0';
-				write(STDOUT_FILENO,buf,nread);*/
-				//write(evs[i].data.fd,buf,sizeof(buf));
-				/*后面添加处理部分*/
+				printf("thread handle finish\n");
 			}
 		}
 	}
 	close(listen_fd);
+	close(epoll_fd);
 	return 0;
 }
 

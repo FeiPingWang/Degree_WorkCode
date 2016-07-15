@@ -17,12 +17,12 @@
 //int curConnect = 0;
 
 //建立连接（线程调用）
-int creatConnect(char* ipServer)
+int creatConnect(char* ipServer,char* filename)
 {
 	int connfd;
 	char buf[BUFFSIZE];
 	struct sockaddr_in servaddr; 
-	char* filename = "t.c";
+	//char* filename = "t.c";
 	//printf("pthread ID created: %d\n",pthread_self());
 	
 	if((connfd = socket(AF_INET,SOCK_STREAM, 0)) == -1 )  
@@ -55,6 +55,7 @@ int creatConnect(char* ipServer)
     while((file_block_length = fread(buf,sizeof(char),BUFFSIZE,fd))>0)  
     {  
         printf("file_block_length:%d\n",file_block_length);  
+		printf("send \n");
         if(send(connfd,buf,file_block_length,0)<0)  
         {  
             perror("Send");  
@@ -83,12 +84,12 @@ int main(int argc, char **argv)
 	pthread_t pthId;
 	int i = 0;
 	int err = 0;
-    if(argc != 2)  
+    if(argc != 3)  
     {  
-        printf("Input server ip !\n");  
+        printf("Input server ip and filename!\n");  
         exit( EXIT_FAILURE );  
     }  
-	creatConnect(argv[1]);
+	creatConnect(argv[1],argv[2]);
     //建立套接字  
     /*for(i = 0;i<MAXPTHREAD;i++)
 	{
