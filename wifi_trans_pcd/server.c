@@ -12,15 +12,16 @@
 #include <pthread.h>
 #include <time.h>
 
-#define MAXEPOLL 200000
-#define PORT     6000 
-#define MAXBACK  1000
-#define MAXLINE  1024
-#define BUFFSIZE 4096
+#include "./thread_poll.h"	//线程池模型
 
-char path[MAXLINE] = "~/PcdFile/";	//接收文件存放目录
-int curReceiveNum = 0;				//接收的文件编号，按照编号保存文件
+//#define DEBUG
 
+static const int  MAXEPOLL = 200000;
+static const int PORT = 6000;
+static const int MAXBACK = 1000;
+static const int MAXLINE = 1024;
+static const int BUFFSIZE = 4096;
+static int num = 0;
 /*设置描述符为非阻塞*/
 int setnonblocking(int fd)  
 {  
@@ -36,7 +37,7 @@ int setnonblocking(int fd)
 }  
 
 /*接收客户端发来的文件，使用TCP协议*/
-int recvFile(void* arg)
+void* recvFile(void* arg)
 {
 		FILE *fp;
 		char *fileTime = NULL;
@@ -44,7 +45,7 @@ int recvFile(void* arg)
 		char buf[BUFFSIZE];
 		int nread,nwrite;
 		int connfd = *((int*)arg);
-		printf("connfd %d\n",connfd);
+		//printf("connfd %d\n",connfd);
 
 		while(nread = recv(connfd,buf,BUFFSIZE,0))
 		{
@@ -67,6 +68,19 @@ int recvFile(void* arg)
 		//close(connfd);
 }
 
+void* testConnect(void* arg)
+{
+	int nread = 0;
+	char buf[BUFFSIZE];
+	int connfd = *((int*)(arg));
+	nread = recv(connfd,buf,BUFFSIZE,0);
+	printf("receive %s %d\n",buf,num++);
+	
+	//send(connfd,buf,nread,0);
+	//printf("reply to client\n");
+}
+
+
 int main(void)
 {
 	int    listen_fd;  
@@ -84,7 +98,7 @@ int main(void)
     struct  epoll_event evs[MAXEPOLL];  //返回就绪的描述符数组
     struct  rlimit  rlt;        		//设置连接数所需  
     char    buf[MAXLINE];  
-    socklen_t   Socklen = sizeof( struct sockaddr_in );
+    socklen_t Socklen = sizeof( struct sockaddr_in);
 	
 	rlt.rlim_max = rlt.rlim_cur = MAXEPOLL;  //更改最大连接数量(无限制)
 	
@@ -93,7 +107,7 @@ int main(void)
         printf("Setrlimit Error : %d\n", errno);  
         exit( EXIT_FAILURE );  
     }  
-//	recvFile(5);
+
 	bzero(&servaddr, sizeof(servaddr));  
     servaddr.sin_family = AF_INET;  
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);  
@@ -122,11 +136,14 @@ int main(void)
         printf("Listen Error : %d\n", errno);  
         exit( EXIT_FAILURE );  
     }  
-	/*接收客户端发来的文件*/
+	
+	/*开启线程池，创建5个线程*/
+	poll_init(10);
 	
     //以下是处理部分，使用epoll
 	epoll_fd = epoll_create(MAXEPOLL);		//创建
-    ev.events = EPOLLIN | EPOLLET;      	//边沿触发，检测读  
+   // ev.events = EPOLLIN | EPOLLET;      	//边沿触发，检测读（只报告一次） 
+	ev.events = EPOLLIN;      				//边沿触发，检测读(会一直报告，不容易出错)
     ev.data.fd = listen_fd;                 //监听套接字加入  
     if(epoll_ctl(epoll_fd,EPOLL_CTL_ADD,listen_fd,&ev) < 0)  
     {  
@@ -165,16 +182,22 @@ int main(void)
             }
 			else							   //有数据需要读
 			{
-				//curReceiveNum++;
 				pthread_t pthId;
-				printf("处理文件开始\n");
-				printf("%d\n",evs[i].data.fd);
-				if(pthread_create(&pthId,NULL,recvFile,&evs[i].data.fd))
+				
+				//printf("%d\n",evs[i].data.fd);
+				/*if(pthread_create(&pthId,NULL,recvFile,&evs[i].data.fd))
 				{
 					printf("pthread_create error\n");
 					exit(EXIT_FAILURE);
-				}
+				}*/
+#ifndef DEBUG	//如果没有定义调试
+				printf("处理文件开始\n");
+				//poll_add_worker(recvFile,&evs[i].data.fd);
+				poll_add_worker(testConnect,&evs[i].data.fd);
 				printf("thread handle finish\n");
+#else
+				testConnect(&evs[i].data.fd);
+#endif
 			}
 		}
 	}
