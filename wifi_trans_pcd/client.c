@@ -65,17 +65,9 @@ int creatConnect(char* ipServer,char* filename)
     }  
     fclose(fd);  
     printf("Transfer file finished !\n");   
+	sleep(5);
     close(connfd);  
 	
-	
-	
-	
-	//write(connfd,buf,sizeof(buf));
-	//printf("connect %d",curConnect++);
-	
-	//printf("pthread ID exit : %d\n",pthread_self());
-	//pthread_exit(0);
-
 }
 
 int main(int argc, char **argv)  

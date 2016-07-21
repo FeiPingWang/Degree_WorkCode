@@ -11,10 +11,11 @@
 #include <sys/resource.h>
 #include <pthread.h>
 #include <time.h>
+#include <netinet/tcp.h>  
 
 #include "./thread_poll.h"	//线程池模型
 
-//#define DEBUG
+#define EDGE
 
 static const int  MAXEPOLL = 200000;
 static const int PORT = 6000;
@@ -22,6 +23,7 @@ static const int MAXBACK = 1000;
 static const int MAXLINE = 1024;
 static const int BUFFSIZE = 4096;
 static int num = 0;
+
 /*设置描述符为非阻塞*/
 int setnonblocking(int fd)  
 {  
@@ -45,17 +47,30 @@ void* recvFile(void* arg)
 		char buf[BUFFSIZE];
 		int nread,nwrite;
 		int connfd = *((int*)arg);
-		//printf("connfd %d\n",connfd);
-
-		while(nread = recv(connfd,buf,BUFFSIZE,0))
+		
+		printf("start recv file\n");
+		
+		while(1)
 		{
+			nread = recv(connfd,buf,BUFFSIZE,0);
+			printf("nread is %d\n",nread);
 			if(nread == -1)
 			{
-				printf("recv end: %d\n",errno);
-				exit(EXIT_FAILURE);
+				if(errno == EAGAIN || errno == EWOULDBLOCK)
+				{
+					printf("recv finish,exit...\n");
+					break;
+				}
+				else
+					close(connfd);
+			}
+			if(nread == 0)		//客户端关闭
+			{
+				printf("client close\n");
+				close(connfd);
 			}
 			nwrite = fwrite(buf,sizeof(char),nread,fp);
-			printf("nread is %d\n",nread);	
+			//printf("nread is %d\n",nread);	
 			if(nwrite < nread)  
 			{  
 				printf("fwrite error: %d\n",errno);
@@ -63,9 +78,9 @@ void* recvFile(void* arg)
 			}  
 			bzero(buf,BUFFSIZE);  
 		}
+		printf("close fp file\n");
 		fclose(fp);
 		pthread_exit(0);
-		//close(connfd);
 }
 
 void* testConnect(void* arg)
@@ -80,6 +95,28 @@ void* testConnect(void* arg)
 	//printf("reply to client\n");
 }
 
+/*设置套接字的keepalive选项*/
+int setKeepAlive(int connfd)
+{
+	int keepalive = 1;
+	int keepidle = 300;		//间隔时间
+	int keepinterval = 10;	//发送探测报文的间隔
+	int keepcount = 5;		//发送的次数
+	if(setsockopt(connfd,SOL_SOCKET,SO_KEEPALIVE,&keepalive,sizeof(keepalive)) == -1)
+	{
+		perror("setsockopt error\n");
+		close(connfd);
+		exit(EXIT_FAILURE);
+	}
+	//设置新的值
+	int len = sizeof(keepinterval);	
+	setsockopt(connfd,SOL_TCP,TCP_KEEPIDLE,&keepidle,len);
+	setsockopt(connfd,SOL_TCP,TCP_KEEPINTVL,&keepinterval,len);
+	setsockopt(connfd,SOL_TCP,TCP_KEEPCNT,&keepcount,len);
+#ifdef DEBUG
+	printf("set keepalive ok\n");
+#endif
+}
 
 int main(void)
 {
@@ -141,9 +178,14 @@ int main(void)
 	poll_init(10);
 	
     //以下是处理部分，使用epoll
-	epoll_fd = epoll_create(MAXEPOLL);		//创建
-   // ev.events = EPOLLIN | EPOLLET;      	//边沿触发，检测读（只报告一次） 
-	ev.events = EPOLLIN;      				//边沿触发，检测读(会一直报告，不容易出错)
+	epoll_fd = epoll_create(MAXEPOLL);
+	
+#ifdef EDGE		//边沿触发
+                ev.events = EPOLLIN | EPOLLET;
+#else				//水平触发
+				ev.events = EPOLLIN;	
+#endif	
+		
     ev.data.fd = listen_fd;                 //监听套接字加入  
     if(epoll_ctl(epoll_fd,EPOLL_CTL_ADD,listen_fd,&ev) < 0)  
     {  
@@ -155,7 +197,7 @@ int main(void)
 	{
 		if((wait_fds = epoll_wait(epoll_fd,evs,MAXEPOLL, -1 )) == -1)  
         {  
-            printf( "Epoll Wait Error : %d\n", errno );  
+            printf("Epoll Wait Error : %d\n", errno);  
             exit( EXIT_FAILURE );  
         }  
 		for(i = 0;i < wait_fds;i++)
@@ -166,12 +208,16 @@ int main(void)
                 {  
                     printf("Accept Error : %d\n", errno);  
                     exit( EXIT_FAILURE );  
-                }  
-                //打印客户的IP
-                printf( "Server get from client %d\n",cur_fds++);  
-                
-				//把新连接加入epoll中
-                ev.events = EPOLLIN | EPOLLET;      	  
+                }     
+                printf( "Server get from client %d\n",cur_fds++);  //打印客户的IP
+				
+                setKeepAlive(conn_fd);	//设置keepalive选项
+				
+#ifdef EDGE		//边沿触发
+                ev.events = EPOLLIN | EPOLLHUP | EPOLLET;
+#else			//水平触发
+				ev.events = EPOLLIN;	
+#endif			
                 ev.data.fd = conn_fd;                    
                 if(epoll_ctl(epoll_fd, EPOLL_CTL_ADD, conn_fd, &ev) < 0 )  
                 {  
@@ -180,24 +226,18 @@ int main(void)
                 }   
                 continue;         
             }
-			else							   //有数据需要读
-			{
-				pthread_t pthId;
-				
-				//printf("%d\n",evs[i].data.fd);
-				/*if(pthread_create(&pthId,NULL,recvFile,&evs[i].data.fd))
+			//需要在此处判断几种有数据读的情况
+			else				
+			{		
+				if(evs[i].events & EPOLLIN)	//对应的文件描述符可以读（包括对端SOCKET正常关闭）
 				{
-					printf("pthread_create error\n");
-					exit(EXIT_FAILURE);
-				}*/
-#ifndef DEBUG	//如果没有定义调试
-				printf("处理文件开始\n");
-				//poll_add_worker(recvFile,&evs[i].data.fd);
-				poll_add_worker(testConnect,&evs[i].data.fd);
-				printf("thread handle finish\n");
-#else
-				testConnect(&evs[i].data.fd);
-#endif
+					poll_add_worker(recvFile,&evs[i].data.fd);
+					//poll_add_worker(testConnect,&evs[i].data.fd);
+					printf("thread handle finish\n");
+				}
+				if(evs[i].events & EPOLLHUP)	//连接关闭
+					printf("connect exit\n");
+				
 			}
 		}
 	}
