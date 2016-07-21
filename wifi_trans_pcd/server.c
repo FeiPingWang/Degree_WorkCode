@@ -59,15 +59,21 @@ void* recvFile(void* arg)
 				if(errno == EAGAIN || errno == EWOULDBLOCK)
 				{
 					printf("recv finish,exit...\n");
+					printf("close fp file\n");
+					close(fp);
 					break;
 				}
 				else
-					close(connfd);
+				{
+					printf("exit recv\n");
+					break;
+				}
 			}
 			if(nread == 0)		//客户端关闭
 			{
 				printf("client close\n");
 				close(connfd);
+				break;
 			}
 			nwrite = fwrite(buf,sizeof(char),nread,fp);
 			//printf("nread is %d\n",nread);	
@@ -78,8 +84,6 @@ void* recvFile(void* arg)
 			}  
 			bzero(buf,BUFFSIZE);  
 		}
-		printf("close fp file\n");
-		fclose(fp);
 		pthread_exit(0);
 }
 
@@ -210,8 +214,8 @@ int main(void)
                     exit( EXIT_FAILURE );  
                 }     
                 printf( "Server get from client %d\n",cur_fds++);  //打印客户的IP
-				
-                setKeepAlive(conn_fd);	//设置keepalive选项
+				setnonblocking(conn_fd);
+                //setKeepAlive(conn_fd);	//设置keepalive选项
 				
 #ifdef EDGE		//边沿触发
                 ev.events = EPOLLIN | EPOLLHUP | EPOLLET;
