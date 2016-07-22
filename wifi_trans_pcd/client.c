@@ -43,7 +43,7 @@ int creatConnect(char* ipServer,char* filename)
         exit(EXIT_FAILURE);  
     }
 	//发送文件
-	FILE *fd = fopen(filename,"rb");
+	FILE *fd = fopen(filename,"rb+");
 	if(fd==NULL)  
     {  
         printf("File :%s not found!\n",filename);  
@@ -65,7 +65,7 @@ int creatConnect(char* ipServer,char* filename)
     }  
     fclose(fd);  
     printf("Transfer file finished !\n");   
-	sleep(5);
+	sleep(10);
     close(connfd);  
 	
 }

@@ -12,10 +12,10 @@
 
 typedef struct worker
 {
-    /*回调函数，任务运行时会调用此函数，注意也可声明成其它形式*/
-    void *(*process)(void *arg);
-    void *arg;	/*回调函数的参数*/
-    struct worker *next;
+	/*回调函数，任务运行时会调用此函数，注意也可声明成其它形式*/
+	void *(*process)(void *arg);
+	void *arg;	/*回调函数的参数*/
+	struct worker *next;
 } CThread_worker;
 
 /*线程池结构*/
@@ -125,7 +125,7 @@ void* thread_routine(void* arg)
 		poll->queue_head = tmp->next;
 		pthread_mutex_unlock(&poll->queue_lock);
 		
-		*tmp->process(tmp->arg);
+		(*(tmp->process))(tmp->arg);
 		free(tmp);
 		tmp = NULL;
 	}
