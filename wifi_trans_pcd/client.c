@@ -1,20 +1,4 @@
-#include <stdio.h>  
-#include <unistd.h>  
-#include <stdlib.h>  
-#include <string.h>  
-#include <errno.h>  
-#include <netinet/in.h>  
-#include <sys/types.h>  
-#include <sys/socket.h>  
-#include <arpa/inet.h>  
-#include <sys/select.h>  
-#include <pthread.h>
-
-#define MAXLINE 1024  
-#define SERV_PORT 6000  
-#define MAXPTHREAD 500
-#define BUFFSIZE 4096
-//int curConnect = 0;
+#include "common.h"
 
 //建立连接（线程调用）
 int creatConnect(char* ipServer,char* filename)
@@ -22,8 +6,6 @@ int creatConnect(char* ipServer,char* filename)
 	int connfd;
 	char buf[BUFFSIZE];
 	struct sockaddr_in servaddr; 
-	//char* filename = "t.c";
-	//printf("pthread ID created: %d\n",pthread_self());
 	
 	if((connfd = socket(AF_INET,SOCK_STREAM, 0)) == -1 )  
     {  
@@ -33,7 +15,7 @@ int creatConnect(char* ipServer,char* filename)
     //套接字信息  
     bzero(&servaddr, sizeof(servaddr));  
     servaddr.sin_family = AF_INET;  
-    servaddr.sin_port = htons(SERV_PORT);  
+    servaddr.sin_port = htons(PORT);  
     inet_pton(AF_INET, ipServer, &servaddr.sin_addr);  
       
     //链接server  
@@ -54,8 +36,7 @@ int creatConnect(char* ipServer,char* filename)
 	
     while((file_block_length = fread(buf,sizeof(char),BUFFSIZE,fd))>0)  
     {  
-        printf("file_block_length:%d\n",file_block_length);  
-		printf("send \n");
+        printf("file_block_length:%d\n",file_block_length); 
         if(send(connfd,buf,file_block_length,0)<0)  
         {  
             perror("Send");  
@@ -65,7 +46,6 @@ int creatConnect(char* ipServer,char* filename)
     }  
     fclose(fd);  
     printf("Transfer file finished !\n");   
-	sleep(10);
     close(connfd);  
 	
 }
@@ -82,20 +62,7 @@ int main(int argc, char **argv)
         exit( EXIT_FAILURE );  
     }  
 	creatConnect(argv[1],argv[2]);
-    //建立套接字  
-    /*for(i = 0;i<MAXPTHREAD;i++)
-	{
-		err = pthread_create(&pthId,NULL,creatConnect,argv[1]);
-		if(err != 0)
-		{
-			printf("create error: %d",errno);
-			exit(EXIT_FAILURE);
-		}
-	//	sleep(1);
-	}
-	pthread_join(pthId,NULL);*/
+   
 	printf("create ok\n");
     return 0;  
 }  
-
-
