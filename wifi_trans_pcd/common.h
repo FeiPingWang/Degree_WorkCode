@@ -23,7 +23,7 @@
 static const size_t MAXLINE = 1024; 
 static const size_t PORT = 9877;  
 static const size_t MAXPTHREAD = 500;
-static const size_t BUFFSIZE = 4096;
+static const size_t BUFFSIZE = 8192;
 static const size_t MAXEPOLL = 65535;
 static const size_t MAXBACK = 1000;
 

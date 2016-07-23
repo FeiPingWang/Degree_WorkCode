@@ -41,6 +41,7 @@ void* handler_readable(void* arg)
 		
 	while(1)
 	{
+		//如果客户端关闭过早，会导致recv来不及处理，就触发了关闭的事件
 		nread = recv(connfd,readBuf,BUFFSIZE,0);
 		printf("nread is %d\n",nread);
 		if(nread == -1)
@@ -66,14 +67,12 @@ void* handler_readable(void* arg)
 			epoll_ctl(epoll_fd, EPOLL_CTL_DEL, connfd, &ev);
 			printf("client close\n");
 			close(connfd);
-			fclose(fp);
 			break;
 		}
 		else{
 			printf("start recv file\n");
-			fp = fopen("test.txt","wb+");		//二进制读写，可以传输任何文件
+			fp = fopen("test.txt","ab+");		//二进制读写，可以传输任何文件
 			nwrite = fwrite(readBuf,sizeof(char),nread,fp);
-			//printf("%s\n",readBuf);
 			if(nwrite < nread)  
 			{  
 				printf("fwrite error: %d\n",errno);
@@ -81,7 +80,6 @@ void* handler_readable(void* arg)
 			}  
 			bzero(readBuf,BUFFSIZE);  
 		}
-			
 	}
 }
 
@@ -236,15 +234,14 @@ int main(void)
 			{		
 				if(evs[i].events & EPOLLIN)	//对应的文件描述符可以读（包括对端SOCKET正常关闭）
 				{
-					//handler_readable(&evs[i].data.fd);
 					poll_add_worker(handler_readable,&evs[i].data.fd);
 				}
 				if(evs[i].events & EPOLLHUP)	//连接关闭
 					printf("客户端连接崩溃\n");
-				if(evs[i].events & EPOLLOUT)	//可写
+				/*if(evs[i].events & EPOLLOUT)	//可写
 				{
 					//poll_add_worker(handler_writeable,&evs[i].data.fd);
-				}
+				}*/
 			}
 		}
 	}
