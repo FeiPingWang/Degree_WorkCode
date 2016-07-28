@@ -9,6 +9,7 @@
 #include <sys/types.h>
 #include <pthread.h>
 #include <assert.h>
+#include <sys/syscall.h>
 
 typedef struct worker
 {
@@ -96,14 +97,14 @@ int poll_add_worker(void *(*process)(void*),void* arg)
 
 void* thread_routine(void* arg)
 {
-	printf("start thread ID is :%u\n",(int)pthread_self());
+	printf("start thread ID is :%d\n",syscall(SYS_gettid));
 	while(1)
 	{
 		pthread_mutex_lock(&(poll->queue_lock));
 		
 		while(poll->cur_queue_size == 0 && poll->shutdown == 0)
 		{
-			printf("thread %u is waiting\n",pthread_self());
+			printf("thread %d is waiting\n",syscall(SYS_gettid));
 			//等待信号就绪
 			pthread_cond_wait(&poll->queue_ready,&poll->queue_lock);	
 		}
@@ -111,11 +112,11 @@ void* thread_routine(void* arg)
 		if(poll->shutdown == 1)
 		{
 			pthread_mutex_unlock(&poll->queue_lock);
-			printf("thead %u is exit\n",pthread_self());
+			printf("thead %d is exit\n",syscall(SYS_gettid));
 			pthread_exit(0);
 		}
 
-		printf("thread %d starting work\n",pthread_self());
+		printf("thread %d starting work\n",syscall(SYS_gettid));
 		assert(poll->cur_queue_size != 0);
 		assert(poll->queue_head != NULL);
 
