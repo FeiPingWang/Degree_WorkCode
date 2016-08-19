@@ -1,10 +1,12 @@
+/************* 接收服务器程序 *****************
+************** by 王飞平 CAD415 ****************/
+
 #ifndef __SERVER_H
 #define __SERVER_H
 
 #include <muduo/net/TcpServer.h>
 #include <set>
 #include <string>
-#include "codec.h"
 
 class WfpServer
 {
@@ -14,14 +16,15 @@ public:
 	void start();  	
 
 private:
+	//处理连接的建立与关闭
 	void onConnection(const muduo::net::TcpConnectionPtr& conn);
-	void onStringMessage(const muduo::net::TcpConnectionPtr& conn,const muduo::string &message,muduo::Timestamp time);
-
+	//收到消息
+	void onMessage(const muduo::net::TcpConnectionPtr& conn,muduo::net::Buffer* buf,muduo::Timestamp time);
+	//void onWriteComplete(const muduo::net::TcpConnectionPtr& conn);
+	
 private:
-	typedef std::set<muduo::net::TcpConnectionPtr> ConnectionList;	//存储连接的容器
 	muduo::net::TcpServer server_;
-	LengthHeaderCodec codec_;
-	ConnectionList connects_;
+	muduo::net::EventLoop* loop_;
 };
 
 #endif 

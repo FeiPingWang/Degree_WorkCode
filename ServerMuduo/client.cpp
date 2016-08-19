@@ -1,28 +1,72 @@
 #include "client.h"
+#include <boost/bind.hpp>
 
 using namespace muduo;
 using namespace muduo::net;
 
-int main(int argc, char *argv[])
+const int kBufSize = 64*1024;	//64k
+const char* g_file = "Makefile";
+	
+void WfpClient::onConnection(const TcpConnectionPtr &conn)
 {
-    LOG_INFO << "pid = " << getpid();
-    if (argc > 2)
+    LOG_INFO << conn->peerAddress().toIpPort() << " is "
+        << (conn->connected() ? "UP" : "DOWN");
+    if (conn->connected())	//连接上
     {
-        EventLoopThread loopThread;
-        uint16_t port = static_cast<uint16_t>(atoi(argv[2]));
-        InetAddress serverAddr(argv[1], port);
+        //connection_ = conn;
+		LOG_INFO << "FileServer - Sending file " << g_file
+             << " to " << conn->peerAddress().toIpPort();
 
-        WfpClient client(loopThread.startLoop(), serverAddr);
-        client.connect();
-        std::string line;
-        while (std::getline(std::cin, line))
-        {
-            client.write(line);
-        }
-        client.disconnect();
-        CurrentThread::sleepUsec(1000 * 1000);  // wait for disconnect, see ace/logging/client.cc
-    } else
-    {
-        printf("Usage: %s host_ip port\n", argv[0]);
-    }
+		FILE* fp = ::fopen(g_file, "rb");
+		if (fp)
+		{
+			conn->setContext(fp);
+			char buf[kBufSize];
+			size_t nread = ::fread(buf, 1, sizeof buf, fp);
+			conn->send(buf, static_cast<int>(nread));
+		}
+		else
+		{
+			conn->shutdown();
+			LOG_INFO << "FileServer - no such file";
+		}
+    } 	
+	else	//断开连接
+	{
+		if (!conn->getContext().empty())
+		{
+			FILE* fp = boost::any_cast<FILE*>(conn->getContext());
+			if (fp)
+			{	
+				::fclose(fp);
+			}
+		}
+	}
+}
+
+/*发送完成回调函数*/
+void WfpClient::onWriteComplete(const TcpConnectionPtr& conn)
+{
+	LOG_INFO << "47";
+	FILE* fp = boost::any_cast<FILE*>(conn->getContext());	//得到之前保存的上下文
+	char buf[kBufSize];
+	size_t nread = ::fread(buf, 1, sizeof buf, fp);
+	LOG_INFO << "trans "<< nread;
+	if (nread > 0)
+	{
+		conn->send(buf, static_cast<int>(nread));
+	}
+	else
+	{
+		::fclose(fp);
+		fp = NULL;
+		conn->setContext(fp);
+		conn->shutdown();
+		LOG_INFO << "FileServer - done";
+	}
+}
+
+void WfpClient::onMessage(const TcpConnectionPtr& conn,muduo::net::Buffer* buf,Timestamp time)
+{
+	LOG_INFO << "receive ";
 }

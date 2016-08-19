@@ -5,29 +5,30 @@ DIRECTORY = /mnt/d/Code/muduo_setup
 INCLUDE = $(DIRECTORY)/include
 LIBRATY = $(DIRECTORY)/lib
 
-CC = g++ -std=c++11
+CC = g++ -g
 CFLAG = -I$(INCLUDE)
 LDFLAG = -L$(LIBRATY) -lmuduo_net -lmuduo_base -lpthread -lrt
 
-#main : main.o server.o
-#	$(CC) -o $@ $^ $(LDFLAG)
+all : mainServer mainClient
 
-#main.o : main.cpp
-#	$(CC) $(CFLAG) -c $<
-all : server client
-
-server : server.o
+mainServer : mainServer.o server.o
 	$(CC) -o $@ $^ $(LDFLAG)
+	
+mainClient : mainClient.o client.o
+	$(CC) -o $@ $^ $(LDFLAG)
+	
+mainServer.o : mainServer.cpp
+	$(CC) $(CFLAG) -c $<
 	
 server.o : server.cpp
 	$(CC) $(CFLAG) -c $<
 	
-client : client.o
-	$(CC) -o $@ $^ $(LDFLAG)
+mainClient.o : mainClient.cpp
+	$(CC) $(CFLAG) -c $<
 	
 client.o : client.cpp
 	$(CC) $(CFLAG) -c $<
 
 .PHONY:clean
 clean:
-	rm *.o server client
+	rm *.o mainServer mainClient

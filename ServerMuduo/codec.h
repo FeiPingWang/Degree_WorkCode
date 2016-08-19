@@ -9,8 +9,7 @@
 #include <boost/function.hpp>
 #include <boost/noncopyable.hpp>
 
-class LengthHeaderCodec : boost::noncopyable
-{
+class LengthHeaderCodec : boost::noncopyable{
 public:
     typedef boost::function<void(const muduo::net::TcpConnectionPtr&,
                                  const muduo::string &message,
@@ -57,7 +56,7 @@ public:
         buf.append(message.data(), message.size());
         int32_t len = static_cast<int32_t>(message.size());
         int32_t be32 = muduo::net::sockets::hostToNetwork32(len);
-        buf.prepend(&be32, sizeof be32);
+        buf.prepend(&be32, sizeof be32);	//长度添加到buf的头部中，发送出去
         conn->send(&buf);
     }
 
